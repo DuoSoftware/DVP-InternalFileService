@@ -48,7 +48,7 @@ RestServer.use(restify.queryParser());
 
 
 
-RestServer.get('/DVP/API/'+version+'/FileService/File/Download/:id/:displayname/:company/:tenant',function(req,res,next)
+RestServer.get('/DVP/API/'+version+'/FileService/File/Download/:tenant/:company/:id/:displayname',function(req,res,next)
 {
     var reqId='';
 
@@ -103,7 +103,7 @@ RestServer.get('/DVP/API/'+version+'/FileService/File/Download/:id/:displayname/
 });
 
 // for freeswitch compatability
-RestServer.head('/DVP/API/'+version+'/FileService/File/Download/:id/:displayname/:company/:tenant',function(req,res,next)
+RestServer.head('/DVP/API/'+version+'/FileService/File/Download/:tenant/:company/:id/:displayname',function(req,res,next)
 {
     var reqId='';
     try {
@@ -141,7 +141,7 @@ RestServer.head('/DVP/API/'+version+'/FileService/File/Download/:id/:displayname
 
 });
 
-RestServer.get('/DVP/API/'+version+'/FileService/File/DownloadLatest/:filename/:company/:tenant',function(req,res,next)
+RestServer.get('/DVP/API/'+version+'/FileService/File/DownloadLatest/:tenant/:company/:filename',function(req,res,next)
 {
     var reqId='';
 
@@ -180,7 +180,7 @@ RestServer.get('/DVP/API/'+version+'/FileService/File/DownloadLatest/:filename/:
 
 });
 
-RestServer.head('/DVP/API/'+version+'/FileService/File/DownloadLatest/:filename/:company/:tenant',function(req,res,next)
+RestServer.head('/DVP/API/'+version+'/FileService/File/DownloadLatest/:tenant/:company/:filename',function(req,res,next)
 {
     var reqId='';
     try {
