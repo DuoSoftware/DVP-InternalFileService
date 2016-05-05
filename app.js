@@ -8,6 +8,8 @@ var config = require('config');
 
 
 var FileHandler=require('./FileHandlerApi.js');
+var RedisPublisher=require('./RedisPublisher.js');
+var DeveloperFileUpoladManager = require('./DeveloperFileUpoladManager.js');
 var messageFormatter = require('dvp-common/CommonMessageGenerator/ClientMessageJsonFormatter.js');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 
@@ -214,6 +216,141 @@ RestServer.head('/DVP/API/'+version+'/FileService/File/DownloadLatest/:tenant/:c
 
     return next();
 
+});
+
+RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',function(req,res,next)
+{
+
+    var reqId='';
+    try
+    {
+        reqId = uuid.v1();
+    }
+    catch(ex)
+    {
+
+    }
+
+
+
+    var Company=req.params.company;
+    var Tenant=req.params.tenant;
+
+
+    var prov=1;
+
+    var Clz='';
+    var Type='';
+    var Category="";
+    var ref="tempRef";
+
+    if(req.body.class)
+    {
+        Clz=req.body.class;
+
+    }
+    if(req.body.fileCategory)
+    {
+        Category=req.body.fileCategory;
+
+    }
+    if(req.body.category)
+    {
+        Category=req.body.category;
+
+    }
+
+    if(req.body.type)
+    {
+
+        Type=req.body.type;
+    }
+    if(req.body.referenceid)
+    {
+        ref=req.body.referenceid;
+    }
+
+    try {
+
+
+        logger.debug('[DVP-FIleService.UploadFiles] - [%s] - [HTTP] - Request received - Inputs - Provision : %s Company : %s Tenant : %s',reqId,prov,Company,Tenant);
+
+        var rand2 = uuid.v4().toString();
+        var fileKey = Object.keys(req.files)[0];
+        var file = req.files[fileKey];
+
+        logger.info('[DVP-FIleService.UploadFiles] - [%s] - [FILEUPLOAD] - File path %s ',reqId,file.path);
+
+
+        var ValObj={
+
+            "tenent":Tenant,
+            "company":Company,
+            "filename":file.name,
+            "type":file.type,
+            "id":rand2
+
+        };
+
+        var AttchVal=JSON.stringify(ValObj);
+
+
+        logger.debug('[DVP-FIleService.UploadFiles] - [%s] - [FILEUPLOAD] - Attachment values %s',reqId,AttchVal);
+
+
+        DeveloperFileUpoladManager.DeveloperUploadFiles(file,rand2,Company, Tenant,ref,option,Clz,Type,Category,reqId,function (errz, respg) {
+
+
+            if(errz)
+            {
+                var jsonString = messageFormatter.FormatMessage(errz, "ERROR/EXCEPTION", false, undefined);
+                logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+                res.end(jsonString);
+            }
+
+            else{
+
+
+                logger.debug('[DVP-FIleService.UploadFiles] - [%s] - To publishing on redis - ServerID  %s Attachment values : %s',reqId,JSON.stringify(respg),AttchVal);
+                RedisPublisher.RedisPublish(respg, AttchVal,reqId, function (errRDS, resRDS) {
+                        if (errRDS)
+                        {
+                            var jsonString = messageFormatter.FormatMessage(errRDS, "ERROR/EXCEPTION", false, undefined);
+                            logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+                            res.end(jsonString);
+
+
+
+                        }
+                        else
+                        {
+                            var jsonString = messageFormatter.FormatMessage(undefined, "SUCCESS", true, rand2);
+                            logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+                            res.end(jsonString);
+
+                        }
+
+
+                    }
+                );
+
+
+            }
+
+
+
+        });
+
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-FIleService.UploadFiles] - [%s] - [HTTP] - Exception occurred when Developer file upload request starts  ',reqId);
+        var jsonString = messageFormatter.FormatMessage(ex, "EXCEPTION", false, undefined);
+        logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+        res.end(jsonString);
+    }
+    return next();
 });
 
 

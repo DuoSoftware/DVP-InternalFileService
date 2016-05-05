@@ -25,6 +25,7 @@
     "mongodb": "^2.1.18",
     "node-uuid": "^1.4.7",
     "path": "^0.12.7",
+    "redis": "^2.6.0-2",
     "restify": "^4.0.4",
     "streamifier": "^0.1.1"
   }
