@@ -244,6 +244,9 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
     var Category="";
     var ref="tempRef";
 
+
+    console.log(req);
+
     if (req.body) {
         if (req.body.class) {
             Clz = req.body.class;
