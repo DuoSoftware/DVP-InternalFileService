@@ -244,56 +244,50 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
     var Category="";
     var ref="tempRef";
 
-    if(req.body.class)
-    {
-        Clz=req.body.class;
+    if (req.body) {
+        if (req.body.class) {
+            Clz = req.body.class;
 
-    }
-    if(req.body.fileCategory)
-    {
-        Category=req.body.fileCategory;
+        }
+        if (req.body.fileCategory) {
+            Category = req.body.fileCategory;
 
-    }
-    if(req.body.category)
-    {
-        Category=req.body.category;
+        }
+        if (req.body.category) {
+            Category = req.body.category;
 
-    }
+        }
 
-    if(req.body.type)
-    {
+        if (req.body.type) {
 
-        Type=req.body.type;
-    }
-    if(req.body.referenceid)
-    {
-        ref=req.body.referenceid;
+            Type = req.body.type;
+        }
+        if (req.body.referenceid) {
+            ref = req.body.referenceid;
+        }
     }
 
 
-    if(req.params.class)
-    {
-        Clz=req.params.class;
+    if (req.params) {
+        if (req.params.class) {
+            Clz = req.params.class;
 
-    }
-    if(req.params.type)
-    {
+        }
+        if (req.params.type) {
 
-        Type=req.params.type;
-    }
-    if(req.params.category)
-    {
-        Category=req.params.category;
+            Type = req.params.type;
+        }
+        if (req.params.category) {
+            Category = req.params.category;
 
-    }
-    if(req.params.referenceid)
-    {
-        ref=req.params.referenceid;
-    }
-    if(req.params.fileCategory)
-    {
-        Category=req.params.fileCategory;
+        }
+        if (req.params.referenceid) {
+            ref = req.params.referenceid;
+        }
+        if (req.params.fileCategory) {
+            Category = req.params.fileCategory;
 
+        }
     }
 
     try {
