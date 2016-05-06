@@ -172,7 +172,7 @@ RestServer.get('/DVP/API/'+version+'/FileService/File/DownloadLatest/:tenant/:co
     }
     catch(ex)
     {
-       // logger.error('[DVP-FIleService.DownloadFile] - [%s] - [HTTP] - Error in Request - Inputs - File ID : %s ',reqId,req.params.id,ex);
+        // logger.error('[DVP-FIleService.DownloadFile] - [%s] - [HTTP] - Error in Request - Inputs - File ID : %s ',reqId,req.params.id,ex);
         var jsonString = messageFormatter.FormatMessage(ex, "EXCEPTION", false, undefined);
         res.status(404);
         res.end(jsonString);
@@ -268,6 +268,32 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
     if(req.body.referenceid)
     {
         ref=req.body.referenceid;
+    }
+
+
+    if(req.params.class)
+    {
+        Clz=req.params.class;
+
+    }
+    if(req.params.type)
+    {
+
+        Type=req.params.type;
+    }
+    if(req.params.category)
+    {
+        Category=req.params.category;
+
+    }
+    if(req.params.referenceid)
+    {
+        ref=req.params.referenceid;
+    }
+    if(req.params.fileCategory)
+    {
+        Category=req.params.fileCategory;
+
     }
 
     try {
