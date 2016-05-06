@@ -365,10 +365,11 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
     }
     catch(ex)
     {
+        console.log(req);
         logger.error('[DVP-FIleService.UploadFiles] - [%s] - [HTTP] - Exception occurred when Developer file upload request starts  ',reqId);
         var jsonString = messageFormatter.FormatMessage(ex, "EXCEPTION", false, undefined);
         logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
-        res.end(jsonString);
+        res.end(req);
     }
     return next();
 });
