@@ -218,7 +218,7 @@ RestServer.head('/DVP/API/'+version+'/FileService/File/DownloadLatest/:tenant/:c
 
 });
 
-RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',function(req,res,next)
+RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',function(req,res,next)
 {
 
     var reqId='';
