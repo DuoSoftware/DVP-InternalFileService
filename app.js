@@ -259,25 +259,18 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
 
 
 
-    if (req.url) {
 
-        var propArray=SplitIt(req.url);
-        Clz=propArray.Class;
-        Type=propArray.Type;
-        Category=propArray.Category;
-        ref=propArray.sessionID;
-        FileStructure=propArray.attachmentType;
-
-
-    }
     if(req.query)
     {
         FilePath=req.query.put_file;
+        Clz=req.query.class;
+        Type=req.query.type;
+        Category=req.query.category;
+        ref=req.query.sessionid;
+        FileStructure=req.query.mediatype+"/"+req.query.filetype;
+        FileName=req.query.sessionid+"."+req.query.filetype;
     }
-    if(req.params)
-    {
-        FileName=req.params.session_id;
-    }
+
     if(req.body)
     {
         BodyObj=req.body;
@@ -326,7 +319,7 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
         logger.debug('[DVP-FIleService.UploadFiles] - [%s] - [FILEUPLOAD] - Attachment values %s',reqId,AttchVal);
 
 
-        DeveloperFileUpoladManager.InternalUploadFiles(file,rand2,Company, Tenant,option,BodyObj,reqId,function (errz, respg) {
+        DeveloperFileUpoladManager.InternalUploadFiles(file,rand2,Company, Tenant,option,req,reqId,function (errz, respg) {
 
 
             if(errz)
