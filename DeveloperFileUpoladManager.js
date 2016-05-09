@@ -152,7 +152,7 @@ function FindCurrentVersion(FObj,company,tenant,reqId,callback)
     }
 }
 
-function FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,desplayname,callback )
+function FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,callback )
 {
     try
     {
@@ -168,7 +168,7 @@ function FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,desplayname,callback )
                 UploadTimestamp: Date.now(),
                 Filename: Fobj.name,
                 Version:result,
-                DisplayName: desplayname,
+                DisplayName: Fobj.displayname,
                 CompanyId:cmp,
                 TenantId: ten,
                 RefId:Fobj.fRefID
@@ -429,7 +429,7 @@ function InternalUploadFiles(Fobj,rand2,cmp,ten,option,BodyObj,reqId,callback)
                 {
                     logger.info('[DVP-FIleService.DeveloperUploadFiles] - [%s] - [PGSQL] - New attachment  successfully inserted to Local',reqId);
                     //callback(undefined, resUpFile.UniqueId);
-                    FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,DisplayName, function (err,res) {
+                    FileUploadDataRecorder(Fobj,rand2,cmp,ten,result, function (err,res) {
                         callback(err,rand2);
                     });
                 }
@@ -448,7 +448,7 @@ function InternalUploadFiles(Fobj,rand2,cmp,ten,option,BodyObj,reqId,callback)
                         {
                             console.log(resMongo);
                             // callback(undefined,resUpFile.UniqueId);
-                            FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,DisplayName , function (err,res) {
+                            FileUploadDataRecorder(Fobj,rand2,cmp,ten,result, function (err,res) {
                                 if(err)
                                 {
                                     callback(err,undefined);

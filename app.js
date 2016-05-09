@@ -252,6 +252,7 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
     var FilePath="";
     var FileName="";
     var BodyObj="";
+    var DisplayName="";
 
 
 
@@ -269,6 +270,7 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
         ref=req.query.sessionid;
         FileStructure=req.query.mediatype+"/"+req.query.filetype;
         FileName=req.query.sessionid+"."+req.query.filetype;
+        DisplayName=req.query.display;
     }
 
     if(req.body)
@@ -309,8 +311,9 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
             fRefID:ref,
             fStructure:FileStructure,
             path:FilePath,
-            name:FileName
-        }
+            name:FileName,
+            displayname:DisplayName
+        };
 
 
         var AttchVal=JSON.stringify(ValObj);
