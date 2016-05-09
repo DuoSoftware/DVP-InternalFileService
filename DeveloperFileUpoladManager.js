@@ -160,7 +160,7 @@ function FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,callback )
             .build(
             {
                 UniqueId: rand2,
-                FileStructure: Fobj.FileStructure,
+                FileStructure: Fobj.fStructure,
                 ObjClass: Fobj.fClass,
                 ObjType: Fobj.type,
                 ObjCategory: Fobj.fCategory,
