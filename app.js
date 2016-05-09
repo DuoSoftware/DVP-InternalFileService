@@ -39,12 +39,7 @@ RestServer.pre(restify.pre.userAgentConnection());
 //Server listen
 RestServer.listen(port, function () {
     console.log('%s listening at %s', RestServer.name, RestServer.url);
-    var x= SplitIt("/DVP/API/1.0.0.0/FileService/File/Upload/1/3?class=CALLSERVER,type=CALL,category=CONVERSATION,referenceid=daeedbbc-5aaf-4ee8-a931-d9bf87591b43,mediatype=audio,filetype=wav,sessionid=daeedbbc-5aaf-4ee8-a931-d9bf87591b43&session_id=ac66f7b4-ba9b-4afc-b5e9-2dd7a947f12f&put_file=/tmp/ac66f7b4-ba9b-4afc-b5e9-2dd7a947f12f_daeedbbc-5aaf-4ee8-a931-d9bf87591b43.wav&url=http%3A//internalfileservice.104.131.67.21.xip.io/DVP/API/1.0.0.0/FileService/File/Upload/1/3%3Fclass%3DCALLSERVER,type%3DCALL,category%3DCONVERSATION,referenceid%3Ddaeedbbc-5aaf-4ee8-a931-d9bf87591b43,mediatype%3Daudio,filetype%3Dwav,sessionid%3Ddaeedbbc-5aaf-4ee8-a931-d9bf87591b43&file_driver=true&HTTAPI_SESSION_ID=ac66f7b4-ba9b-4afc-b5e9-2dd7a947f12f&hostname=1");
-    console.log(x.Class);
-    console.log(x.Type);
-    console.log(x.Category);
-    console.log(x.sessionID);
-    console.log(x.attachmentType);
+
 
 });
 //Enable request body parsing(access)
@@ -381,30 +376,6 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
 
 
 
-function SplitIt(propStr)
-{
-    //var x= "/DVP/API/1.0.0.0/FileService/File/Upload/1/3?class=CALLSERVER,type=CALL,category=CONVERSATION,referenceid=daeedbbc-5aaf-4ee8-a931-d9bf87591b43,mediatype=audio,filetype=wav,sessionid=daeedbbc-5aaf-4ee8-a931-d9bf87591b43&session_id=ac66f7b4-ba9b-4afc-b5e9-2dd7a947f12f&put_file=/tmp/ac66f7b4-ba9b-4afc-b5e9-2dd7a947f12f_daeedbbc-5aaf-4ee8-a931-d9bf87591b43.wav&url=http%3A//internalfileservice.104.131.67.21.xip.io/DVP/API/1.0.0.0/FileService/File/Upload/1/3%3Fclass%3DCALLSERVER,type%3DCALL,category%3DCONVERSATION,referenceid%3Ddaeedbbc-5aaf-4ee8-a931-d9bf87591b43,mediatype%3Daudio,filetype%3Dwav,sessionid%3Ddaeedbbc-5aaf-4ee8-a931-d9bf87591b43&file_driver=true&HTTAPI_SESSION_ID=ac66f7b4-ba9b-4afc-b5e9-2dd7a947f12f&hostname=1";
-
-    var res = propStr.split("?")[1].split(",");
-    //console.log(res);
-    var Class=res[0].split("=")[1];
-    var Type=res[1].split("=")[1];
-    var Category=res[2].split("=")[1];
-    var sessionID=res[3].split("=")[1];
-    var attachmentType=res[4].split("=")[1]+"/"+res[5].split("=")[1];
-
-    var propObj =
-    {
-        Class:Class,
-        Type:Type,
-        Category:Category,
-        sessionID:sessionID,
-        attachmentType:attachmentType
-
-    }
-    return propObj;
-
-}
 
 function Crossdomain(req,res,next){
 
