@@ -251,7 +251,7 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
 
 
 
-    console.log(req);
+    console.log(req.body);
 
 
 
@@ -270,6 +270,7 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
 
     if(req.body)
     {
+        console.log("Body Found");
         BodyObj=req.body;
     }
 
