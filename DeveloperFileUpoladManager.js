@@ -234,28 +234,31 @@ function MongoUploader(uuid,path,reqId,callback)
 {
 
 
-    var uri = 'mongodb://'+config.Mongo.user+':'+config.Mongo.password+'@'+config.Mongo.ip+'/'+config.Mongo.dbname;
-    mongodb.MongoClient.connect(uri, function(error, db)
-    {
-        console.log(uri);
-        console.log("Error1 "+error);
-        //console.log("db "+JSON.stringify(db));
-        //assert.ifError(error);
-        var bucket = new mongodb.GridFSBucket(db);
+    try {
+        var uri = 'mongodb://' + config.Mongo.user + ':' + config.Mongo.password + '@' + config.Mongo.ip + '/' + config.Mongo.dbname;
+        mongodb.MongoClient.connect(uri, function (error, db) {
+            console.log(uri);
+            console.log("Error1 " + error);
+            //console.log("db "+JSON.stringify(db));
+            //assert.ifError(error);
+            var bucket = new mongodb.GridFSBucket(db);
 
-        path.pipe(bucket.openUploadStream(uuid)).
-            on('error', function(error) {
-                // assert.ifError(error);
-                console.log("Error "+error);
-                callback(error,undefined);
-            }).
-            on('finish', function() {
-                console.log('done!');
-                //process.exit(0);
-                callback(undefined,uuid);
-            });
+            fs.createReadStream(path).pipe(bucket.openUploadStream(uuid)).
+                on('error', function (error) {
+                    // assert.ifError(error);
+                    console.log("Error " + error);
+                    callback(error, undefined);
+                }).
+                on('finish', function () {
+                    console.log('done!');
+                    //process.exit(0);
+                    callback(undefined, uuid);
+                });
 
-    });
+        });
+    } catch (e) {
+        callback(e, undefined);
+    }
 
 }
 
