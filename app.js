@@ -317,7 +317,10 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
         logger.debug('[DVP-FIleService.UploadFiles] - [%s] - [FILEUPLOAD] - Attachment values %s',reqId,AttchVal);
 
 
-        DeveloperFileUpoladManager.InternalUploadFiles(file,rand2,Company, Tenant,option,req,reqId,function (errz, respg) {
+        //DeveloperFileUpoladManager.InternalUploadFiles(file,rand2,Company, Tenant,option,req,reqId,function (errz, respg)
+        DeveloperFileUpoladManager.InternalUploadFiles(file,rand2,Company, Tenant,option,BodyObj,reqId,function (errz, respg)
+
+        {
 
 
             if(errz)
