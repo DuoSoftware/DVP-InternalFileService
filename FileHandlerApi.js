@@ -230,7 +230,7 @@ function DownloadLatestFileByID(res,FileName,option,Company,Tenant,reqId)
             {
                 logger.debug('[DVP-FIleService.DownloadLatestFileByID] - [%s] - Max version found for file %s',reqId,FileName);
 
-                DbConn.FileUpload.findOne({where:[{CompanyId:Company},{TenantId:Tenant},{Filename: FileName},{Version:resMax}]}).then(function (resUpFile) {
+                DbConn.FileUpload.find({where:[{CompanyId:Company},{TenantId:Tenant},{Filename: FileName},{Version:resMax}]}).then(function (resUpFile) {
 
                     if(resUpFile)
                     {
