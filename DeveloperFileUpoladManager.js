@@ -235,6 +235,18 @@ function MongoUploader(uuid,path,reqId,callback)
 
 
     try {
+
+
+
+        var writableStream = fs.createWriteStream('D:\\file2.wav');
+
+        path.pipe(writableStream).on("error", function(err){
+
+            console.log("Error " + err);
+        });
+
+        /*
+
         var uri = 'mongodb://' + config.Mongo.user + ':' + config.Mongo.password + '@' + config.Mongo.ip + '/' + config.Mongo.dbname;
         mongodb.MongoClient.connect(uri, function (error, db) {
             console.log(uri);
@@ -243,7 +255,7 @@ function MongoUploader(uuid,path,reqId,callback)
             //assert.ifError(error);
             var bucket = new mongodb.GridFSBucket(db);
 
-            fs.createReadStream(path).pipe(bucket.openUploadStream(uuid)).
+            path.pipe(bucket.openUploadStream(uuid)).
                 on('error', function (error) {
                     // assert.ifError(error);
                     console.log("Error " + error);
@@ -256,6 +268,8 @@ function MongoUploader(uuid,path,reqId,callback)
                 });
 
         });
+
+        */
     } catch (e) {
         callback(e, undefined);
     }

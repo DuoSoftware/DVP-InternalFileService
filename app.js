@@ -251,8 +251,8 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
 
 
 
-    console.log(req.body);
-
+    console.log(req);
+    req.readable=true;
 
 
 
@@ -377,7 +377,6 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
     }
     return next();
 });
-
 
 
 
