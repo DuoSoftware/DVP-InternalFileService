@@ -243,7 +243,7 @@ function MongoUploader(uuid,path,reqId,callback)
             //assert.ifError(error);
             var bucket = new mongodb.GridFSBucket(db);
 
-           path.pipe(bucket.openUploadStream(uuid)).
+            fs.createReadStream(path).pipe(bucket.openUploadStream(uuid)).
                 on('error', function (error) {
                     // assert.ifError(error);
                     console.log("Error " + error);
