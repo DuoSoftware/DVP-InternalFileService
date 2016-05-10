@@ -238,14 +238,8 @@ function MongoUploader(uuid,path,reqId,callback)
 
 
 
-        var writableStream = fs.createWriteStream('D:\\file2.wav');
 
-        path.pipe(writableStream).on("error", function(err){
 
-            console.log("Error " + err);
-        });
-
-        /*
 
         var uri = 'mongodb://' + config.Mongo.user + ':' + config.Mongo.password + '@' + config.Mongo.ip + '/' + config.Mongo.dbname;
         mongodb.MongoClient.connect(uri, function (error, db) {
@@ -269,7 +263,6 @@ function MongoUploader(uuid,path,reqId,callback)
 
         });
 
-        */
     } catch (e) {
         callback(e, undefined);
     }
