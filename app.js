@@ -416,22 +416,74 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
 
 
 
-    if(req.query)
+   /* if(req.query)
     {
-        /* FilePath=req.query.put_file;*/
+        /!* FilePath=req.query.put_file;*!/
         Clz=req.query.class;
         Type=req.query.type;
         Category=req.query.category;
         ref=req.query.referenceid;
-        /*FileStructure=req.query.mediatype+"/"+req.query.filetype;
+        /!*FileStructure=req.query.mediatype+"/"+req.query.filetype;
          FileName=req.query.sessionid+"."+req.query.filetype;
-         DisplayName=req.query.display;*/
+         DisplayName=req.query.display;*!/
     }
 
     if(req.body)
     {
         console.log("Body Found");
         BodyObj=req.body;
+        Clz=req.body.class;
+        Type=req.query.type;
+        Category=req.query.category;
+        ref=req.query.referenceid;
+    }
+*/
+
+
+    if (req.body) {
+        if (req.body.class) {
+            Clz = req.body.class;
+
+        }
+        if (req.body.fileCategory) {
+            Category = req.body.fileCategory;
+
+        }
+        if (req.body.category) {
+            Category = req.body.category;
+
+        }
+
+        if (req.body.type) {
+
+            Type = req.body.type;
+        }
+        if (req.body.referenceid) {
+            ref = req.body.referenceid;
+        }
+    }
+
+
+    if (req.params) {
+        if (req.params.class) {
+            Clz = req.params.class;
+
+        }
+        if (req.params.type) {
+
+            Type = req.params.type;
+        }
+        if (req.params.category) {
+            Category = req.params.category;
+
+        }
+        if (req.params.referenceid) {
+            ref = req.params.referenceid;
+        }
+        if (req.params.fileCategory) {
+            Category = req.params.fileCategory;
+
+        }
     }
 
 

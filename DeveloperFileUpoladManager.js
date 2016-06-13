@@ -425,7 +425,9 @@ function InternalUploadFiles(Fobj,rand2,cmp,ten,option,BodyObj,reqId,callback)
 
 
 
-        var DisplayName=Fobj.name;
+        var DisplyArr = Fobj.path.split('\\');
+
+        var DisplayName=DisplyArr[DisplyArr.length-1];
 
         FindCurrentVersion(Fobj,cmp,ten,reqId,function(err,result)
         {
