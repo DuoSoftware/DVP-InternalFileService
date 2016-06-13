@@ -378,6 +378,165 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
     return next();
 });
 
+RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',function(req,res,next)
+{
+
+    var reqId='';
+    try
+    {
+        reqId = uuid.v1();
+    }
+    catch(ex)
+    {
+
+    }
+
+
+
+    var Company=req.params.company;
+    var Tenant=req.params.tenant;
+
+
+    var prov=1;
+
+    var Clz='';
+    var Type='';
+    var Category="";
+    var ref="";
+    var FileStructure="";
+    var FilePath="";
+    var FileName="";
+    var BodyObj="";
+    var DisplayName="";
+
+
+
+    console.log(req);
+    req.readable=true;
+
+
+
+    if(req.query)
+    {
+        FilePath=req.query.put_file;
+        Clz=req.query.class;
+        Type=req.query.type;
+        Category=req.query.category;
+        ref=req.query.sessionid;
+        FileStructure=req.query.mediatype+"/"+req.query.filetype;
+        FileName=req.query.sessionid+"."+req.query.filetype;
+        DisplayName=req.query.display;
+    }
+
+    if(req.body)
+    {
+        console.log("Body Found");
+        BodyObj=req.body;
+    }
+
+
+
+
+    try {
+
+
+        logger.debug('[DVP-FIleService.UploadFiles] - [%s] - [HTTP] - Request received - Inputs - Provision : %s Company : %s Tenant : %s',reqId,prov,Company,Tenant);
+
+        var rand2 = uuid.v4().toString();
+        /* var fileKey = Object.keys(req.files)[0];
+         var file = req.files[fileKey];*/
+
+        logger.info('[DVP-FIleService.UploadFiles] - [%s] - [FILEUPLOAD] - File path %s ',reqId,FilePath);
+
+
+        var ValObj={
+
+            "tenent":Tenant,
+            "company":Company,
+            "filename":FileName,
+            "type":Type,
+            "id":rand2
+
+        };
+
+        var file=
+        {
+            fClass:Clz,
+            type:Type,
+            fCategory:Category,
+            fRefID:ref,
+            fStructure:FileStructure,
+            path:FilePath,
+            name:FileName,
+            displayname:DisplayName
+        };
+
+
+        var AttchVal=JSON.stringify(ValObj);
+
+
+        logger.debug('[DVP-FIleService.UploadFiles] - [%s] - [FILEUPLOAD] - Attachment values %s',reqId,AttchVal);
+
+
+        //DeveloperFileUpoladManager.InternalUploadFiles(file,rand2,Company, Tenant,option,req,reqId,function (errz, respg)
+        DeveloperFileUpoladManager.InternalUploadFiles(file,rand2,Company, Tenant,option,req,reqId,function (errz, respg)
+
+        {
+
+
+            if(errz)
+            {
+                var jsonString = messageFormatter.FormatMessage(errz, "ERROR/EXCEPTION", false, undefined);
+                logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+                res.end(jsonString);
+            }
+
+            else{
+
+
+                logger.debug('[DVP-FIleService.UploadFiles] - [%s] - To publishing on redis - ServerID  %s Attachment values : %s',reqId,JSON.stringify(respg),AttchVal);
+                RedisPublisher.RedisPublish(respg, AttchVal,reqId, function (errRDS, resRDS) {
+                        if (errRDS)
+                        {
+                            var jsonString = messageFormatter.FormatMessage(errRDS, "ERROR/EXCEPTION", false, undefined);
+                            logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+                            res.end(jsonString);
+
+
+
+                        }
+                        else
+                        {
+                            var jsonString = messageFormatter.FormatMessage(undefined, "SUCCESS", true, rand2);
+                            logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+                            res.end(jsonString);
+
+                        }
+
+
+                    }
+                );
+
+
+            }
+
+
+
+        });
+
+
+    }
+    catch(ex)
+    {
+        var x = JSON.parse(req);
+        console.log(JSON.stringify(x));
+        logger.error('[DVP-FIleService.UploadFiles] - [%s] - [HTTP] - Exception occurred when Developer file upload request starts  ',reqId);
+        var jsonString = messageFormatter.FormatMessage(ex, "EXCEPTION", false, undefined);
+        logger.debug('[DVP-FIleService.UploadFiles] - [%s] - Request response : %s ', reqId, jsonString);
+        res.end(JSON.stringify(x));
+    }
+    return next();
+});
 
 
 function Crossdomain(req,res,next){
