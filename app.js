@@ -418,14 +418,14 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
 
     if(req.query)
     {
-       /* FilePath=req.query.put_file;*/
+        /* FilePath=req.query.put_file;*/
         Clz=req.query.class;
         Type=req.query.type;
         Category=req.query.category;
         ref=req.query.referenceid;
         /*FileStructure=req.query.mediatype+"/"+req.query.filetype;
-        FileName=req.query.sessionid+"."+req.query.filetype;
-        DisplayName=req.query.display;*/
+         FileName=req.query.sessionid+"."+req.query.filetype;
+         DisplayName=req.query.display;*/
     }
 
     if(req.body)
@@ -444,11 +444,14 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
 
         var rand2 = uuid.v4().toString();
         var fileKey = Object.keys(req.files)[0];
-         var file = req.files[fileKey];
-        FileStructure=file.type;
-        FileName=file.name;
-        FilePath=file.path;
-        DisplayName=ref;
+        var attachedFile = req.files[fileKey];
+        FileStructure=attachedFile.type;
+        FileName=attachedFile.name;
+        FilePath=attachedFile.path;
+
+        var DisplyArr = attachedFile.path.split('\\');
+
+        var DisplayName=DisplyArr[DisplyArr.length-1];
 
 
 
@@ -478,6 +481,8 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
             name:FileName,
             displayname:DisplayName
         };
+
+        console.log("File Data "+file);
 
 
         var AttchVal=JSON.stringify(ValObj);
