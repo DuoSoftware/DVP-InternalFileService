@@ -168,7 +168,7 @@ function FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,callback )
                 UploadTimestamp: Date.now(),
                 Filename: Fobj.name,
                 Version:result,
-                DisplayName: Fobj.displayname,
+                DisplayName: Fobj.name,
                 CompanyId:cmp,
                 TenantId: ten,
                 RefId:Fobj.fRefID
@@ -230,6 +230,39 @@ function FileUploadDataRecorder(Fobj,rand2,cmp,ten,result,callback )
     }
 }
 
+
+
+function MongoUploader(uuid,path,reqId,callback)
+{
+
+
+    var uri = 'mongodb://'+config.Mongo.user+':'+config.Mongo.password+'@'+config.Mongo.ip+'/'+config.Mongo.dbname;
+    mongodb.MongoClient.connect(uri, function(error, db)
+    {
+        console.log(uri);
+        console.log("Error1 "+error);
+        //console.log("db "+JSON.stringify(db));
+        //assert.ifError(error);
+        var bucket = new mongodb.GridFSBucket(db);
+
+        fs.createReadStream(path).
+            pipe(bucket.openUploadStream(uuid)).
+            on('error', function(error) {
+                // assert.ifError(error);
+                console.log("Error "+error);
+                callback(error,undefined);
+            }).
+            on('finish', function() {
+                console.log('done!');
+                //process.exit(0);
+                callback(undefined,uuid);
+            });
+
+    });
+
+}
+
+/*
 function MongoUploader(uuid,path,reqId,callback)
 {
 
@@ -268,6 +301,10 @@ function MongoUploader(uuid,path,reqId,callback)
     }
 
 }
+
+*/
+
+
 
 /*function DeveloperUploadFiles(Fobj,rand2,cmp,ten,ref,option,Clz,Type,Category,reqId,callback)
  {
@@ -424,11 +461,6 @@ function InternalUploadFiles(Fobj,rand2,cmp,ten,option,BodyObj,reqId,callback)
     {
 
 
-
-        var DisplyArr = Fobj.path.split('\\');
-
-        var DisplayName=DisplyArr[DisplyArr.length-1];
-
         FindCurrentVersion(Fobj,cmp,ten,reqId,function(err,result)
         {
             if(err)
@@ -449,7 +481,7 @@ function InternalUploadFiles(Fobj,rand2,cmp,ten,option,BodyObj,reqId,callback)
                 {
                     logger.info('[DVP-FIleService.DeveloperUploadFiles] - [%s]  - New attachment on process of uploading to MongoDB',reqId);
                     console.log("TO MONGO >>>>>>>>> "+rand2);
-                    MongoUploader(rand2,BodyObj,reqId,function(errMongo,resMongo)
+                    MongoUploader(rand2,Fobj.path,reqId,function(errMongo,resMongo)
                     {
                         if(errMongo)
                         {
