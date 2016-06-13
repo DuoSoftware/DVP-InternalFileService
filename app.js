@@ -418,14 +418,14 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
 
     if(req.query)
     {
-        FilePath=req.query.put_file;
+       /* FilePath=req.query.put_file;*/
         Clz=req.query.class;
         Type=req.query.type;
         Category=req.query.category;
-        ref=req.query.sessionid;
-        FileStructure=req.query.mediatype+"/"+req.query.filetype;
+        ref=req.query.referenceid;
+        /*FileStructure=req.query.mediatype+"/"+req.query.filetype;
         FileName=req.query.sessionid+"."+req.query.filetype;
-        DisplayName=req.query.display;
+        DisplayName=req.query.display;*/
     }
 
     if(req.body)
@@ -443,8 +443,16 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
         logger.debug('[DVP-FIleService.UploadFiles] - [%s] - [HTTP] - Request received - Inputs - Provision : %s Company : %s Tenant : %s',reqId,prov,Company,Tenant);
 
         var rand2 = uuid.v4().toString();
-        /* var fileKey = Object.keys(req.files)[0];
-         var file = req.files[fileKey];*/
+        var fileKey = Object.keys(req.files)[0];
+         var file = req.files[fileKey];
+        FileStructure=file.type;
+        FileName=file.name;
+        FilePath=file.path;
+        DisplayName=ref;
+
+
+
+
 
         logger.info('[DVP-FIleService.UploadFiles] - [%s] - [FILEUPLOAD] - File path %s ',reqId,FilePath);
 
