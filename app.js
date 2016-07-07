@@ -408,6 +408,7 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
     var FileName="";
     var BodyObj="";
     var DisplayName="";
+    var Display="";
 
 
 
@@ -460,6 +461,10 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
         }
         if (req.body.referenceid) {
             ref = req.body.referenceid;
+        }
+        if(req.body.display)
+        {
+            Display=req.body.display;
         }
     }
 
@@ -531,7 +536,7 @@ RestServer.post('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',
             fStructure:FileStructure,
             path:FilePath,
             name:FileName,
-            displayname:DisplayName
+            displayname:Display
         };
 
         console.log("File Data "+file);
