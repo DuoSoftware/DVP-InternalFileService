@@ -252,6 +252,9 @@ RestServer.put('/DVP/API/'+version+'/FileService/File/Upload/:tenant/:company',f
 
     req.readable=true;
 
+console.log("params "+req.params);
+console.log("body "+req.body);
+console.log("query "+req.query);
 
 
 
