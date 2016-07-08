@@ -307,11 +307,19 @@ console.log("query "+req.query);
         }
         if(req.query.mediatype && req.query.filetype)
         {
-            FileStructure=req.query.mediatype+"/"+req.query.filetype;
+            if(req.query.filetype=="wav" || req.query.filetype=="mp3")
+            {
+                FileStructure="audio/"+req.query.filetype;
+            }
+            else
+            {
+                FileStructure=req.query.mediatype+"/"+req.query.filetype;
+            }
+
         }
-        if(req.query.sessionid && req.query.sessionid)
+        if(req.query.sessionid && req.query.filetype)
         {
-            FileName=req.query.sessionid+"."+req.query.sessionid;
+            FileName=req.query.sessionid+"."+req.query.filetype;
         }
         if(req.query.display)
         {
